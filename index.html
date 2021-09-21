@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <title>Weekly Meal Planner</title>
-    <link rel='stylesheet' href='./index.css'>
+    <link rel='stylesheet' href='./style.css'>
     <script defer type='text/javascript' src='./index.js'></script>
 </head>
 
@@ -36,10 +36,14 @@
     <div id='groceries'>
         <ul id='list'>
             <h3>Groceries</h3>
-            
+            <!-- Add grocery items here -->
         </ul>
-            <li>Bananas</li>
-        </ul>
+
+        <form id='addGroceries'>
+            <h3>Add Item</h3>
+            <input type='text' name='item' placeholder='New Item' />
+            <input type='submit', value='Add' />
+        </form>
     </div>
 
     <div>
@@ -55,7 +59,7 @@
                 <option value='sunday'>Sunday</option>
             </select>
             <!-- <label for='notes'>Do you have notes to add?</label> -->
-            <input type='textarea' name='notes' placeholder='Notes' />
+            <input type='text' name='notes' placeholder='Notes' />
             <input type='submit', value='Add to this week' />
         </form>
     </div>
