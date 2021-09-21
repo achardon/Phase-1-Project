@@ -1,0 +1,50 @@
+body {
+    text-align: center;
+}
+
+#title {
+    text-align: center;
+    font-size: 50px;
+    color: blueviolet;
+    font-weight: bold;
+    padding: 40px;
+}
+
+table {
+    
+    background-color: rgb(178, 193, 194);
+    
+}
+
+.day {
+    padding: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.content {
+    height: 500px;
+    width: 150px;
+    vertical-align: top;
+}
+
+#week {
+    display: inline-block;
+}
+
+#groceries {
+    display: inline-block;
+    vertical-align: top;
+}
+
+li {
+    margin-left: 50px;
+}
+
+form {
+    padding: 30px;
+}
+
+button {
+    background-color: orange;
+}

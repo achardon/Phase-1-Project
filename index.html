@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>Weekly Meal Planner</title>
+    <link rel='stylesheet' href='./index.css'>
+    <script defer type='text/javascript' src='./index.js'></script>
+</head>
+
+<body>
+    <div id='title'>
+        Weekly Meal Planner
+    </div>
+
+    <div id='week'>
+        <table border='5' cellspacing='0' align='center'>
+            <tr id ='weekday'>
+                <td class ='day'>Monday</td>
+                <td class='day'>Tuesday</td>
+                <td class='day'>Wednesday</td>
+                <td class='day'>Thursday</td>
+                <td class='day'>Friday</td>
+                <td class='day'>Saturday</td>
+                <td class='day'>Sunday</td>
+            </tr>
+                <td class='content' id='mon'></td>
+                <td class='content' id='tues'></td>
+                <td class='content' id='wed'></td>
+                <td class='content' id='thurs'></td>
+                <td class='content' id='fri'></td>
+                <td class='content' id='sat'></td>
+                <td class='content' id='sun'></td>
+        </table>
+    </div>
+
+    <div id='groceries'>
+        <ul id='list'>
+            <h3>Groceries</h3>
+            
+        </ul>
+            <li>Bananas</li>
+        </ul>
+    </div>
+
+    <div>
+        <form id='addNotes'>
+            <h3>Add Notes Here</h3>
+            <select name='day'>
+                <option value='monday'>Monday</option>
+                <option value='tuesday'>Tuesday</option>
+                <option value='wednesday'>Wednesday</option>
+                <option value='thursday'>Thursday</option>
+                <option value='friday'>Friday</option>
+                <option value='saturday'>Saturday</option>
+                <option value='sunday'>Sunday</option>
+            </select>
+            <!-- <label for='notes'>Do you have notes to add?</label> -->
+            <input type='textarea' name='notes' placeholder='Notes' />
+            <input type='submit', value='Add to this week' />
+        </form>
+    </div>
+        
+   
+</body>
+
+</html>
