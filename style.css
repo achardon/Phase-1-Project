@@ -38,7 +38,9 @@ table {
 }
 
 li {
-    margin-left: 50px;
+    list-style-position: inside;
+    padding: 7px;
+    
 }
 
 form {
@@ -47,4 +49,5 @@ form {
 
 button {
     background-color: orange;
+    margin-left: 15px;
 }
