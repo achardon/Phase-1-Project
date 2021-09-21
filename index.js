@@ -57,8 +57,73 @@ document.querySelector('#addGroceries').addEventListener('submit', (e) => {
     form.reset()
 })
 
+document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchRequest = e.target.search.value
+    document.querySelectorAll('li.search').forEach(li=>li.remove())
+    //need to delete current recipe shown
+    document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
+    document.querySelectorAll('li.step').forEach(li=>li.remove())
 
+    //console.log(searchRequest)
+    getRecipes(searchRequest);
+})
+
+function getRecipes(searchRequest) {
+    //console.log('inside getRecipes function')
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=c19ab73b0fea4182a41a6222b727ccea&query=${searchRequest}`)
+    .then(res => res.json())
+    .then(data => {
+        data.results.forEach(recipe => {
+            //console.log(recipe.title)
+            const li = document.createElement('li')
+            li.className = 'search'
+            li.innerText=recipe.title
+            document.querySelector('#searchResults ul').append(li)
+            const recipeID = recipe.id
+            //console.log('id:' + recipeID)
+            li.addEventListener('click', () => {
+                getRecipeInfo(recipeID)
+                
+            })
+        })
+    })
+}
+
+function getRecipeInfo(recipeID) {
+    console.log('inside getRecipeInfo function')
+    console.log(recipeID)
+    fetch(`https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=c19ab73b0fea4182a41a6222b727ccea`)
+    .then(res => res.json())
+    .then(data => {
+        //debugger;
+        // data.analyzedInstructions[0].steps.forEach(instruction => console.log(instruction.step))
+        // data.extendedIngredients.forEach(ingredient => console.log(ingredient.amount + ' ' + ingredient.measures.us.unitShort + ' ' + ingredient.name))
+
+        data.extendedIngredients.forEach(ingredient => {
+            const ingredientInfo = document.createElement('li')
+            ingredientInfo.className = 'ingredient'
+            ingredientInfo.innerText = (ingredient.amount + ' ' + ingredient.measures.us.unitShort + ' ' + ingredient.name)
+            document.querySelector('ul#ingredients').appendChild(ingredientInfo)
+        })
+
+        data.analyzedInstructions[0].steps.forEach(instruction => {
+            const step = document.createElement('li')
+            step.className = 'step'
+            step.innerText = instruction.step
+            document.querySelector('ol#instructions').appendChild(step)
+        })
+      
+    })
+    
+}
 
 //Questions
 //For the week plan, using parentElement for the delete button works (but not parentNode). 
 //For thte groceries, parentNode does work (and parentElemtn works too)... why the difference?
+
+
+
+//Notes
+//this is a successful request for chickpeas and dairy-free: https://api.spoonacular.com/recipes/complexSearch?apiKey=c19ab73b0fea4182a41a6222b727ccea&query=chickpeas&intolerances=dairy
+//this is a successful request for all the information about a given recipe (using recipe ID): https://api.spoonacular.com/recipes/641072/information?apiKey=c19ab73b0fea4182a41a6222b727ccea

@@ -22,7 +22,7 @@
                 <td class='day'>Friday</td>
                 <td class='day'>Saturday</td>
                 <td class='day'>Sunday</td>
-            </tr>
+            </tr class='content'>
                 <td class='content' id='mon'></td>
                 <td class='content' id='tues'></td>
                 <td class='content' id='wed'></td>
@@ -38,15 +38,16 @@
             <h3>Groceries</h3>
             <!-- Add grocery items here -->
         </ul>
-
+        
         <form id='addGroceries'>
-            <h3>Add Item</h3>
-            <input type='text' name='item' placeholder='New Item' />
+            <!-- <h3>Add Item</h3> -->
+            <label for='item'>Add Item</label>
+            <input type='text' name='item' id='item' placeholder='New Item' />
             <input type='submit', value='Add' />
         </form>
     </div>
 
-    <div>
+    <span>
         <form id='addNotes'>
             <h3>Add Notes Here</h3>
             <select name='day'>
@@ -60,9 +61,34 @@
             </select>
             <!-- <label for='notes'>Do you have notes to add?</label> -->
             <input type='text' name='notes' placeholder='Notes' />
+            <!-- <textarea id='notes'name='notes' placeholder='Notes'></textarea> -->
             <input type='submit', value='Add to this week' />
         </form>
-    </div>
+    </span>
+
+    <span>
+        <form id='recipeSearch'>
+            <h3>Recipe Search</h3>
+            <input type='text' name='search' placeholder='Search' />
+            <input type='submit', value='Search Recipes' />
+            <section id='searchResults'>
+                <ul>
+                    <!-- search results go here -->
+                </ul>
+            </section>
+        </form>
+    </span>
+
+    <span id='showRecipe'>
+        <ul id='ingredients'>
+            <h3>Ingredients:</h3>
+            <!-- add ingredients here -->
+        </ul>
+        <ol id='instructions'>
+            <h3>Instructions:</h3>
+            <!-- add instructions here -->
+        </ol>
+    </span>
         
    
 </body>

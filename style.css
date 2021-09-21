@@ -11,9 +11,7 @@ body {
 }
 
 table {
-    
     background-color: rgb(178, 193, 194);
-    
 }
 
 .day {
@@ -37,6 +35,16 @@ table {
     vertical-align: top;
 }
 
+#addNotes {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#recipeSearch {
+    display: inline-block;
+    vertical-align: top;
+}
+
 li {
     list-style-position: inside;
     padding: 7px;
@@ -50,4 +58,8 @@ form {
 button {
     background-color: orange;
     margin-left: 15px;
+}
+
+.search {
+    cursor:pointer;
 }
