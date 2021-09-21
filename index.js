@@ -83,6 +83,8 @@ function getRecipes(searchRequest) {
             const recipeID = recipe.id
             //console.log('id:' + recipeID)
             li.addEventListener('click', () => {
+                document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
+                document.querySelectorAll('li.step').forEach(li=>li.remove())
                 getRecipeInfo(recipeID)
                 
             })
