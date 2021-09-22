@@ -66,8 +66,11 @@ document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
     const searchRequest = e.target.search.value
     document.querySelectorAll('li.search').forEach(li=>li.remove())
     //need to delete current recipe shown
+    document.querySelector('#showRecipe h3').innerText = ''
+    document.querySelector('img').src = ''
     document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
     document.querySelectorAll('li.step').forEach(li=>li.remove())
+    document.querySelector('#showRecipe').style.visibility = 'hidden'
 
     //console.log(searchRequest)
     getRecipes(searchRequest);
@@ -96,15 +99,14 @@ function getRecipes(searchRequest) {
                 document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
                 document.querySelectorAll('li.step').forEach(li=>li.remove())
                 getRecipeInfo(recipeID)
-                
             })
         })
     })
 }
 
 function getRecipeInfo(recipeID) {
-    console.log('inside getRecipeInfo function')
-    console.log(recipeID)
+    //console.log('inside getRecipeInfo function')
+    //console.log(recipeID)
     fetch(`https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=c19ab73b0fea4182a41a6222b727ccea`)
     .then(res => res.json())
     .then(data => {
@@ -129,6 +131,27 @@ function getRecipeInfo(recipeID) {
             ingredientInfo.className = 'ingredient'
             ingredientInfo.innerText = (ingredient.amount + ' ' + ingredient.measures.us.unitShort + ' ' + ingredient.name)
             document.querySelector('ul#ingredients').appendChild(ingredientInfo)
+            ingredientInfo.style.cursor = 'pointer'
+            ingredientInfo.addEventListener('click', (e) => {
+
+                //copied from grocery item event listener
+                const form = document.querySelector('#addGroceries')
+                const newItem = document.createElement('li')
+                newItem.innerText = ingredientInfo.innerText
+                const deleteButton = document.createElement('button')
+                deleteButton.innerText = 'x'
+                newItem.appendChild(deleteButton)
+                document.querySelector('ul').appendChild(newItem)
+                deleteButton.addEventListener ('click', () => {
+                    // debugger
+                    const parentNode = deleteButton.parentNode
+                    parentNode.remove()
+                })
+                //above copied from grocery item event listener
+
+                ingredientInfo.style.fontStyle = 'italic'
+
+            })
         })
 
         data.analyzedInstructions[0].steps.forEach(instruction => {
@@ -214,7 +237,6 @@ getNotes()
 
 //For the json template, there is a section for 'deploying the server' using Heroku. What is that for?
 
-//The image for the recipe is not displaying, but when I type in the console, image.src, the correct URL shows up. Why is it not displaying?
 
 
 //Notes
@@ -222,3 +244,9 @@ getNotes()
 //this is a successful request for all the information about a given recipe (using recipe ID): https://api.spoonacular.com/recipes/641072/information?apiKey=c19ab73b0fea4182a41a6222b727ccea
 
 //json: Any time you want to reset your database back to your original data, run 'npm run seed' again.
+
+
+//Potential things to add
+//line before recipe list: "Click recipe for more info"
+//event listener for ingredient to add to grocery list
+//filter recipes with dietary restrictions
