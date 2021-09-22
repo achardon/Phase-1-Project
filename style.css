@@ -68,6 +68,10 @@ button {
     visibility: hidden
 }
 
+#searchResults {
+    visibility: hidden
+}
+
 /* #showRecipe > h3 {
     color?
     center?

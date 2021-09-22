@@ -81,6 +81,7 @@ function getRecipes(searchRequest) {
     fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=c19ab73b0fea4182a41a6222b727ccea&query=${searchRequest}`)
     .then(res => res.json())
     .then(data => {
+        document.querySelector('#searchResults').style.visibility = 'visible'
         data.results.forEach(recipe => {
             //console.log(recipe.title)
             const li = document.createElement('li')
