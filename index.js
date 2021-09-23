@@ -1,52 +1,61 @@
-//console.log('js script working')
 
+//make variable for notes for each day
+const week = []
 
-//function addNotes(id) {
-    document.querySelector('#addNotes').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const form = document.querySelector('#addNotes')
-        //console.log(e.target.day.value)
-        const notes = document.createElement('p')
-        notes.innerText = e.target.notes.value
-        const deleteContent = document.createElement('button')
-        deleteContent.innerText = 'x'
-        notes.appendChild(deleteContent)
-        if (e.target.day.value === 'monday') {
-            document.querySelector('#mon').appendChild(notes)
-        }
-        else if (e.target.day.value === 'tuesday') {
-            document.querySelector('#tues').appendChild(notes)
-        }
-        else if (e.target.day.value === 'wednesday') {
-            document.querySelector('#wed').appendChild(notes)
-        }
-        else if (e.target.day.value === 'thursday') {
-            document.querySelector('#thurs').appendChild(notes)
-        }
-        else if (e.target.day.value === 'friday') {
-            document.querySelector('#fri').appendChild(notes)
-        }
-        else if (e.target.day.value === 'saturday') {
-            document.querySelector('#sat').appendChild(notes)
-        }
-        else if (e.target.day.value === 'sunday') {
-            document.querySelector('#sun').appendChild(notes)
-        }
-        deleteContent.addEventListener ('click', () => {
-            //debugger
-            const parentElement = deleteContent.parentElement
-            parentElement.remove()
-        })
-        //debugger;
-        //persistNotes(notes.innerText, id)
-        form.reset()
+document.querySelector('#addNotes').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = document.querySelector('#addNotes')
+    //console.log(e.target.day.value)
+
+    //this is where the PATCH fetch request should go for persisting the note to the backend
+    persistNotes(e.target.notes.value, e.target.day.value)
+    
+    const notes = document.createElement('p')
+    notes.innerText = e.target.notes.value
+    const deleteContent = document.createElement('button')
+    deleteContent.innerText = 'x'
+    notes.appendChild(deleteContent)
+
+    //need to finish below
+    //document.querySelector('#day-${e.target.day.value}').appendChild(notes)
+
+    if (e.target.day.value === '1') {
+        document.querySelector('#mon').appendChild(notes)
+    }
+    else if (e.target.day.value === '2') {
+        document.querySelector('#tues').appendChild(notes)
+    }
+    else if (e.target.day.value === '3') {
+        document.querySelector('#wed').appendChild(notes)
+    }
+    else if (e.target.day.value === '4') {
+        document.querySelector('#thurs').appendChild(notes)
+    }
+    else if (e.target.day.value === '5') {
+        document.querySelector('#fri').appendChild(notes)
+    }
+    else if (e.target.day.value === '6') {
+        document.querySelector('#sat').appendChild(notes)
+    }
+    else if (e.target.day.value === '7') {
+        document.querySelector('#sun').appendChild(notes)
+    }
+    deleteContent.addEventListener ('click', () => {
+        //debugger
+        const parentElement = deleteContent.parentElement
+        parentElement.remove()
     })
-//}
+    //debugger;
+    form.reset()
+})
 
 document.querySelector('#addGroceries').addEventListener('submit', (e) => {
     e.preventDefault();
     const form = document.querySelector('#addGroceries')
     //console.log(e.target.day.value)
+    
+    persistGroceries(e.target.item.value)
+
     const newItem = document.createElement('li')
     newItem.innerText = e.target.item.value
     const deleteButton = document.createElement('button')
@@ -57,6 +66,7 @@ document.querySelector('#addGroceries').addEventListener('submit', (e) => {
         // debugger
         const parentNode = deleteButton.parentNode
         parentNode.remove()
+        //this is where the fetch function needs to go for deleting the item on the server
     })
     form.reset()
 })
@@ -111,32 +121,31 @@ function getRecipeInfo(recipeID) {
     fetch(`https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=c19ab73b0fea4182a41a6222b727ccea`)
     .then(res => res.json())
     .then(data => {
-        //debugger;
-        // data.analyzedInstructions[0].steps.forEach(instruction => console.log(instruction.step))
-        // data.extendedIngredients.forEach(ingredient => console.log(ingredient.amount + ' ' + ingredient.measures.us.unitShort + ' ' + ingredient.name))
-
-        // const title = document.createElement('h3')
-        // title.innerText = data.title
+        //get recipe title
         document.querySelector('#showRecipe h3').innerText = data.title
         document.querySelector("#showRecipe > h3").style.color = 'orange'
-
+        //make section visible
         document.querySelector('#showRecipe').style.visibility = 'visible'
-        
+        //get recipe image
         const image = document.querySelector('img')
         image.src = data.image
         image.alt = 'picture of recipe'
         image.style.height = 20
-
+        //get reciep ingredients
         data.extendedIngredients.forEach(ingredient => {
             const ingredientInfo = document.createElement('li')
             ingredientInfo.className = 'ingredient'
             ingredientInfo.innerText = (ingredient.amount + ' ' + ingredient.measures.us.unitShort + ' ' + ingredient.name)
             document.querySelector('ul#ingredients').appendChild(ingredientInfo)
             ingredientInfo.style.cursor = 'pointer'
+            //add event listener to add ingredient to grocery list
             ingredientInfo.addEventListener('click', (e) => {
 
                 //copied from grocery item event listener
                 const form = document.querySelector('#addGroceries')
+
+                persistGroceries(ingredientInfo.innerText)
+
                 const newItem = document.createElement('li')
                 newItem.innerText = ingredientInfo.innerText
                 const deleteButton = document.createElement('button')
@@ -154,7 +163,7 @@ function getRecipeInfo(recipeID) {
 
             })
         })
-
+        //get recipe instructions
         data.analyzedInstructions[0].steps.forEach(instruction => {
             const step = document.createElement('li')
             step.className = 'step'
@@ -166,69 +175,121 @@ function getRecipeInfo(recipeID) {
     
 }
 
+function getGroceries() {
+    fetch('http://localhost:3000/groceries')
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(item => {
+            //console.log (item.name)
+            const form = document.querySelector('#addGroceries')
+            const newItem = document.createElement('li')
+            newItem.innerText = item.name
+            const deleteButton = document.createElement('button')
+            deleteButton.innerText = 'x'
+            newItem.appendChild(deleteButton)
+            document.querySelector('ul').appendChild(newItem)
+            deleteButton.addEventListener ('click', () => {
+            const parentNode = deleteButton.parentNode
+            parentNode.remove()
+            })
+        })
+    })
+}
+
 function getNotes() {
     fetch('http://localhost:3000/days')
     .then(res => res.json())
     .then(data => {
         //addNotes(day.id)
         data.forEach(day => {
-            console.log(day.name, day.notes)
-            if (day.notes !== undefined) {
+            week.push(day)
+            //console.log(day.name, day.notes)
+            if (day.notes[0] !== undefined) {
+
+                //debugger;
                 //copied from #addNotes event listener above
-                const notes = document.createElement('p')
-                notes.innerText = day.notes
-                const deleteContent = document.createElement('button')
-                deleteContent.innerText = 'x'
-                notes.appendChild(deleteContent)
-                if (day.name === 'Monday') {
-                    document.querySelector('#mon').appendChild(notes)
-                }
-                else if (day.name === 'Tuesday') {
-                    document.querySelector('#tues').appendChild(notes)
-                }
-                else if (day.name === 'Wednesday') {
-                    document.querySelector('#wed').appendChild(notes)
-                }
-                else if (day.name === 'Thursday') {
-                    document.querySelector('#thurs').appendChild(notes)
-                }
-                else if (day.name === 'Friday') {
-                    document.querySelector('#fri').appendChild(notes)
-                }
-                else if (day.name === 'Saturday') {
-                    document.querySelector('#sat').appendChild(notes)
-                }
-                else if (day.name === 'Sunday') {
-                    document.querySelector('#sun').appendChild(notes)
-                }
-                deleteContent.addEventListener ('click', () => {
-                    //debugger
-                    const parentElement = deleteContent.parentElement
-                    parentElement.remove()
+                
+                day.notes.forEach(note => {
+                    
+                    const notes = document.createElement('p')
+                    notes.innerText = note //how to get rid of x?
+                    const deleteContent = document.createElement('button')
+                    deleteContent.innerText = 'x'
+                    notes.appendChild(deleteContent)
+                    
+                    if (day.name === 'Monday') {
+                        document.querySelector('#mon').appendChild(notes)
+                    }
+                    else if (day.name === 'Tuesday') {
+                        document.querySelector('#tues').appendChild(notes)
+                    }
+                    else if (day.name === 'Wednesday') {
+                        document.querySelector('#wed').appendChild(notes)
+                    }
+                    else if (day.name === 'Thursday') {
+                        document.querySelector('#thurs').appendChild(notes)
+                    }
+                    else if (day.name === 'Friday') {
+                        document.querySelector('#fri').appendChild(notes)
+                    }
+                    else if (day.name === 'Saturday') {
+                        document.querySelector('#sat').appendChild(notes)
+                    }
+                    else if (day.name === 'Sunday') {
+                        document.querySelector('#sun').appendChild(notes)
+                    }
+                    deleteContent.addEventListener ('click', () => {
+                        //debugger
+                        const parentElement = deleteContent.parentElement
+                        parentElement.remove()
+                    })
                 })
             }
         })
     })
 }
 
-// function persistNotes(notes, id) {
-//     fetch(`http://localhost:3000/days/${id}`, {
-//         method: "PATCH",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({
-    //// make an array of current notes, to which new notes can be added
-//             "notes": notes
-//         })
-//     })
-//     .then(res => res.json())
-//     .then(data => {
-//         console.log(data)
-//     })
-// }
+//is this supposed to POST or PATCH? I'm getting two errors that don't make sense...
+//this should be a POST
+//once this function works, it needs to be added to event listener for adding groceries to list (AND to event listener for ingredients after a recipe search)
+function persistGroceries(item) {
+    fetch('http://localhost:3000/groceries', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify({name: item})
+        })
+    .then(res => res.json())
+    .then(data => {
+        
+    })
+}
+
+function persistNotes(note, id) {
+    idIntoInt = parseInt(id) 
+    const day = week.find((day) => (day.id === idIntoInt))
+    const newArray = [...day.notes, note]
+    week[idIntoInt - 1].notes = newArray
+    fetch(`http://localhost:3000/days/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "notes": newArray
+        })
+    })
+    .then(res => res.json())
+    .then(data => {})
+}
+
+//Still need to persist DELETING notes and grocery items. Would that be a DELETE or a PATCH?
 
 getNotes()
+
+getGroceries()
 
 //Questions
 //For the week plan, using parentElement for the delete button works (but not parentNode). 
@@ -238,13 +299,22 @@ getNotes()
 
 //For the json template, there is a section for 'deploying the server' using Heroku. What is that for?
 
+//For some of the recipes, the amount has way too many decimal places (0.333333 cups of oil) - is this easy to fix? (ex: spaghetti squash boats)
+
+//For styling the page, how could I make a block for the grocery list and search functions all in one line? Or have the recipe picture be next to the ingredients and next to the steps?
+
+//after I added the json server and pushed my newest repo to github, it said something about warning: json server something something... can I still push it to github and to the website even though it's running with json?
+
 
 
 //Notes
 //this is a successful request for chickpeas and dairy-free: https://api.spoonacular.com/recipes/complexSearch?apiKey=c19ab73b0fea4182a41a6222b727ccea&query=chickpeas&intolerances=dairy
 //this is a successful request for all the information about a given recipe (using recipe ID): https://api.spoonacular.com/recipes/641072/information?apiKey=c19ab73b0fea4182a41a6222b727ccea
 
-//json: Any time you want to reset your database back to your original data, run 'npm run seed' again.
+//JSON Notes
+// to run the server in development mode: "npm run dev"
+// Any time you want to reset your database back to your original data, run 'npm run seed' again.
+
 
 
 //Potential things to add
