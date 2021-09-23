@@ -23,13 +23,13 @@
                 <td class='day'>Saturday</td>
                 <td class='day'>Sunday</td>
             </tr class='content'>
-                <td class='content' id='mon'></td>
-                <td class='content' id='tues'></td>
-                <td class='content' id='wed'></td>
-                <td class='content' id='thurs'></td>
-                <td class='content' id='fri'></td>
-                <td class='content' id='sat'></td>
-                <td class='content' id='sun'></td>
+                <td class='content' id='day-1'></td>
+                <td class='content' id='day-2'></td>
+                <td class='content' id='day-3'></td>
+                <td class='content' id='day-4'></td>
+                <td class='content' id='day-5'></td>
+                <td class='content' id='day-6'></td>
+                <td class='content' id='day-7'></td>
         </table>
     </div>
 
@@ -65,8 +65,8 @@
             <input type='submit', value='Add to this week' />
         </form>
     </span>
-
-    <span>
+    <br>
+    <div class = 'recipeContainer'>
         <form id='recipeSearch'>
             <h3>Recipe Search</h3>
             <input type='text' name='search' placeholder='Search' />
@@ -84,9 +84,9 @@
                 </ul>
             </section>
         </form>
-    </span>
+    
 
-    <span id='showRecipe'>
+    <span id='showRecipeIngredients'>
         <h3></h3>
         <img></img>
         <ul id='ingredients'>
@@ -95,11 +95,18 @@
             <br>
             <!-- add ingredients here -->
         </ul>
+        
+    </span>
+        
+    <span id='showRecipeInstructions'>
         <ol id='instructions'>
             <h3>Instructions:</h3>
             <!-- add instructions here -->
         </ol>
+        
     </span>
+
+    </div>
         
    
 </body>

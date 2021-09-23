@@ -64,7 +64,11 @@ button {
     cursor:pointer;
 }
 
-#showRecipe {
+#showRecipeIngredients {
+    visibility: hidden
+}
+
+#showRecipeInstructions {
     visibility: hidden
 }
 
@@ -72,7 +76,16 @@ button {
     visibility: hidden
 }
 
+.recipeContainer {
+    background-color: rgb(217, 234, 241);
+    display: flex;
+    flex-wrap: nowrap;
+}
+
 /* #showRecipe > h3 {
     color?
     center?
 } */
+
+
+/* for positioning: flexbox, css grid, css library (ex; bootstrap)  */

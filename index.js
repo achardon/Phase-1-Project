@@ -20,25 +20,25 @@ document.querySelector('#addNotes').addEventListener('submit', (e) => {
     //document.querySelector('#day-${e.target.day.value}').appendChild(notes)
 
     if (e.target.day.value === '1') {
-        document.querySelector('#mon').appendChild(notes)
+        document.querySelector('#day-1').appendChild(notes)
     }
     else if (e.target.day.value === '2') {
-        document.querySelector('#tues').appendChild(notes)
+        document.querySelector('#day-2').appendChild(notes)
     }
     else if (e.target.day.value === '3') {
-        document.querySelector('#wed').appendChild(notes)
+        document.querySelector('#day-3').appendChild(notes)
     }
     else if (e.target.day.value === '4') {
-        document.querySelector('#thurs').appendChild(notes)
+        document.querySelector('#day-4').appendChild(notes)
     }
     else if (e.target.day.value === '5') {
-        document.querySelector('#fri').appendChild(notes)
+        document.querySelector('#day-5').appendChild(notes)
     }
     else if (e.target.day.value === '6') {
-        document.querySelector('#sat').appendChild(notes)
+        document.querySelector('#day-6').appendChild(notes)
     }
     else if (e.target.day.value === '7') {
-        document.querySelector('#sun').appendChild(notes)
+        document.querySelector('#day-7').appendChild(notes)
     }
     deleteContent.addEventListener ('click', () => {
         //debugger
@@ -76,11 +76,11 @@ document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
     const searchRequest = e.target.search.value
     document.querySelectorAll('li.search').forEach(li=>li.remove())
     //need to delete current recipe shown
-    document.querySelector('#showRecipe h3').innerText = ''
+    document.querySelector('#showRecipeIngredients h3').innerText = ''
     document.querySelector('img').src = ''
     document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
     document.querySelectorAll('li.step').forEach(li=>li.remove())
-    document.querySelector('#showRecipe').style.visibility = 'hidden'
+    document.querySelector('#showRecipeIngredients').style.visibility = 'hidden'
 
     //console.log(searchRequest)
     getRecipes(searchRequest);
@@ -122,10 +122,12 @@ function getRecipeInfo(recipeID) {
     .then(res => res.json())
     .then(data => {
         //get recipe title
-        document.querySelector('#showRecipe h3').innerText = data.title
-        document.querySelector("#showRecipe > h3").style.color = 'orange'
+        document.querySelector('#showRecipeIngredients h3').innerText = data.title
+        document.querySelector("#showRecipeIngredients > h3").style.color = 'orange'
         //make section visible
-        document.querySelector('#showRecipe').style.visibility = 'visible'
+        document.querySelector('#showRecipeIngredients').style.visibility = 'visible'
+        document.querySelector('#showRecipeInstructions').style.visibility = 'visible'
+
         //get recipe image
         const image = document.querySelector('img')
         image.src = data.image
@@ -218,25 +220,25 @@ function getNotes() {
                     notes.appendChild(deleteContent)
                     
                     if (day.name === 'Monday') {
-                        document.querySelector('#mon').appendChild(notes)
+                        document.querySelector('#day-1').appendChild(notes)
                     }
                     else if (day.name === 'Tuesday') {
-                        document.querySelector('#tues').appendChild(notes)
+                        document.querySelector('#day-2').appendChild(notes)
                     }
                     else if (day.name === 'Wednesday') {
-                        document.querySelector('#wed').appendChild(notes)
+                        document.querySelector('#day-3').appendChild(notes)
                     }
                     else if (day.name === 'Thursday') {
-                        document.querySelector('#thurs').appendChild(notes)
+                        document.querySelector('#day-4').appendChild(notes)
                     }
                     else if (day.name === 'Friday') {
-                        document.querySelector('#fri').appendChild(notes)
+                        document.querySelector('#day-5').appendChild(notes)
                     }
                     else if (day.name === 'Saturday') {
-                        document.querySelector('#sat').appendChild(notes)
+                        document.querySelector('#day-6').appendChild(notes)
                     }
                     else if (day.name === 'Sunday') {
-                        document.querySelector('#sun').appendChild(notes)
+                        document.querySelector('#day-7').appendChild(notes)
                     }
                     deleteContent.addEventListener ('click', () => {
                         //debugger
