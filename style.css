@@ -48,7 +48,6 @@ table {
 li {
     list-style-position: inside;
     padding: 7px;
-    
 }
 
 form {
@@ -81,11 +80,6 @@ button {
     display: flex;
     flex-wrap: nowrap;
 }
-
-/* #showRecipe > h3 {
-    color?
-    center?
-} */
 
 
 /* for positioning: flexbox, css grid, css library (ex; bootstrap)  */
