@@ -1,5 +1,5 @@
 
-//make variable for notes for each day
+//make empty array for the week 
 const week = []
 
 document.querySelector('#addNotes').addEventListener('submit', (e) => {
@@ -7,32 +7,16 @@ document.querySelector('#addNotes').addEventListener('submit', (e) => {
     const form = document.querySelector('#addNotes')
     const dayID = e.target.day.value 
     const note = e.target.notes.value
-
     //PATCH request
     persistNotes(note, dayID)
-    
-    // const newNote = document.createElement('p')
-    // newNote.innerText = note
-    // const deleteContent = document.createElement('button')
-    // deleteContent.innerText = 'x'
-    // newNote.appendChild(deleteContent)
-
-    // document.querySelector(`#day-${dayID}`).appendChild(newNote)
-
-    // deleteContent.addEventListener ('click', () => {
-    //     persistDeleteNotes(note, id)
-    //     const parentElement = deleteContent.parentElement
-    //     parentElement.remove()
-    // })
-    //debugger;
     form.reset()
 })
 
 document.querySelector('#addGroceries').addEventListener('submit', (e) => {
     e.preventDefault();
-    const form = document.querySelector('#addGroceries')
+    //POST request
     persistGroceries(e.target.item.value)
-    form.reset()
+    document.querySelector('#addGroceries').reset()
 })
 
 document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
@@ -45,6 +29,7 @@ document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
     document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
     document.querySelectorAll('li.step').forEach(li=>li.remove())
     document.querySelector('#showRecipeIngredients').style.visibility = 'hidden'
+    document.querySelector('#showRecipeInstructions').style.visibility = 'hidden'
     getRecipes(searchRequest);
 })
 
@@ -55,7 +40,6 @@ function getRecipes(searchRequest) {
     .then(data => {
         document.querySelector('#searchResults').style.visibility = 'visible'
         data.results.forEach(recipe => {
-            //console.log(recipe.title)
             const li = document.createElement('li')
             li.className = 'search'
             li.innerText=recipe.title
@@ -164,7 +148,6 @@ function persistGroceries(item) {
         headers: {
             "Content-Type": "application/json"
         },
-        //
         body: JSON.stringify({name: item})
         })
     .then(res => res.json())
@@ -202,15 +185,12 @@ function persistNotes(note, id) {
         const deleteContent = document.createElement('button')
         deleteContent.innerText = 'x'
         newNote.appendChild(deleteContent)
-    
         document.querySelector(`#day-${id}`).appendChild(newNote)
-    
         deleteContent.addEventListener ('click', () => {
             persistDeleteNotes(note, id)
             const parentElement = deleteContent.parentElement
             parentElement.remove()
         })
-    
     })
 }
 
@@ -223,30 +203,19 @@ function persistDeleteGroceries(itemID, deleteButton) {
         })
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         const parentNode = deleteButton.parentNode
         parentNode.remove()
     })
 }
 
 function persistDeleteNotes(note, id) {
-    console.log(note)
-    console.log(id)
-
     idIntoInt = parseInt(id) 
     const day = week.find((day) => (day.id === idIntoInt))
-    //NEED TO DELETE INSTEAD OF ADD NOTE
-    //debugger
-    //const item = day.notes.find(item => (item === note))
-    //item is the item we want to delete, need index of item in array so we can delete that item from the array
-    //can I use findIndex()
-    //day.notes.findIndex(FUNCTION THAT RETURNS ITEM)
     const index = day.notes.findIndex(x => x === note)
-    //need to remove 'index' declared above from day's notes array
+    //remove 'index' declared above from day's notes array
     day.notes.splice(index, 1)
     const newArray = day.notes
     week[idIntoInt - 1].notes = newArray
-    //debugger
     fetch(`http://localhost:3000/days/${id}`, {
         method: "PATCH",
         headers: {
@@ -264,17 +233,16 @@ getNotes()
 
 getGroceries()
 
-//Questions
-//For the week plan, using parentElement for the delete button works (but not parentNode). 
-//For the groceries, parentNode does work (and parentElemtn works too)... why the difference?
 
-//For getting the notes on the page: I do it with the event listener for the notes form, and also from the json. How would I be able to just make one function called renderNotes when I used e.target.day.value for the first and day.name for the second. How do I make that more streamlined?
+
+//Questions
+//For the week plan, using parentElement for the delete button works (but not parentNode). For the groceries, parentNode does work (and parentElement works too)... why the difference?
 
 //For the json template, there is a section for 'deploying the server' using Heroku. What is that for?
 
 //For some of the recipes, the amount has way too many decimal places (0.333333 cups of oil) - is this easy to fix? (ex: spaghetti squash boats)
 
-//after I added the json server and pushed my newest repo to github, it said something about warning: json server something something... can I still push it to github and to the website even though it's running with json?
+//After I added the json server and pushed my newest repo to github, it said something about warning: json server something something... can I still push it to github and to the website even though it's running with json?
 
 
 
