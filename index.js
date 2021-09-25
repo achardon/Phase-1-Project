@@ -23,7 +23,7 @@ document.querySelector('#recipeSearch').addEventListener('submit', (e) => {
     e.preventDefault();
     const searchRequest = e.target.search.value
     document.querySelectorAll('li.search').forEach(li=>li.remove())
-    //need to delete current recipe shown
+    //delete current recipe shown
     document.querySelector('#showRecipeIngredients h3').innerText = ''
     document.querySelector('img').src = ''
     document.querySelectorAll('li.ingredient').forEach(li=>li.remove())
